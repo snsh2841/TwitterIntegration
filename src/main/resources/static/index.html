@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>--- TODO ---</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- Leave those next 4 lines if you care about users using IE8 -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<div class="container" style="margin-top: 50px">
+    <div class="row">
+        <div class="col-md-12">
+            <form id="form" action="">
+                <div class="col-md-3">
+                    <input type="text" required="required" placeholder="Please enter a valid first username" class="form-control" id="user1">
+                </div>
+                <div class="col-md-3">
+                    <input type="text" required="required" placeholder="Please enter a valid second username" class="form-control" id="user2">
+                </div>
+                <button class="btn btn-primary" type="button" id="btnSubmit">Submit</button>
+            </form>
+        </div>
+    </div>
+    <div id="mutualFriend" class="row" style="padding: 20px; display: none" >
+        Mutual Friends<br>
+        <ol id="result">
+
+        </ol>
+        <div style="display: none;" id="nofriends">
+            No mutual friends found
+        </div>
+    </div>
+</div>
+<!-- Including Bootstrap JS (with its jQuery dependency) so that dynamic components work -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
+<script>
+    $(function(){
+
+        $('#btnSubmit').on('click',function(){
+
+            $.get('http://localhost:8080/twitter/mutualfriends/'+$("#user1").val()+'/'+$("#user2").val() )
+                .done(function(result){
+                    $('#result').html('');
+
+                    if(result.length == 0){
+
+                        $("#nofriends").css("display","block");
+
+                    }else {
+
+                        $.each(result, function(index){
+                            //  $("#result").("display", "block");
+                            $("#mutualFriend").css("display","block");
+                            $("#nofriends").css("display","none");
+
+                            $('#result').append("<li>"+result[index]+"</li>");
+                        });
+                    }
+
+                })
+        })
+    })
+</script>
+</body>
+</html>
